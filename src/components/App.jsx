@@ -8,12 +8,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            songsList: [
-                "Song 1",
-                "Song 2",
-                "Song 3"
-            ],
-            songsFromApi = []
+            songsList: [],   
         }
     }
 
@@ -24,7 +19,7 @@ class App extends Component {
     async getAllSongs(){
         let response = await axios.get('http://127.0.0.1:8000/music/')
         this.setState({
-            songsFromApi: response.data
+            songsList: response.data
         });
     }
 
