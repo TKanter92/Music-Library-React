@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import DisplaySongsList from './DisplaySongsList/DisplaySongsList';
 import AddSongForm from './AddSongForm/AddSongForm';
-import axios from 'axios'
+import axios from 'axios';
+import DisplaySongsList from './DisplaySongsList/DisplaySongsList';
+import TitleBar from './TitleBar/TitleBar';
+import Footer from './Footer/Footer';
+import EditSongForm from './EditSongForm/EditSongForm';
 
 
 class App extends Component {
@@ -11,31 +14,45 @@ class App extends Component {
             songsList: [],   
         }
     }
-
     componentDidMount() {
         this.getAllSongs();
     }
 
-    async getAllSongs(){
+    async getAllSongs () {
         let response = await axios.get('http://127.0.0.1:8000/music/')
         this.setState({
             songsList: response.data
         });
     }
 
-    addSongToSongsList = (songToAdd) => {
-        let tempSong = this.state.songsList;
-        tempSong.push(songToAdd);
-        this.setState({
-            songsList: tempSong
-        });
+    getSongDetails = async (songId) => {
+        await axios.get(`http://127.0.0.1:8000/music/${songId}/`);
+        this.getAllSongs();
+    }
+    
+    addSongToSongsList = async (songToAdd) => {
+        await axios.post('http://127.0.0.1:8000/music/', songToAdd)
+        this.getAllSongs();
+    }
+
+    editSongOnList = async (songId) => {
+        await axios.put(`http://127.0.0.1:8000/music/${songId}/`)
+        this.getAllSongs();
+    }
+
+    deleteSongOnList = async (songId) => {
+        await axios.delete(`http://127.0.0.1:8000/music/${songId}/`);
+        this.getAllSongs();
     }
 
     render() { 
         return (
             <React.Fragment>
-                <DisplaySongsList listSongs={this.state.songsList} />
+                <TitleBar />
+                <DisplaySongsList deleteSong={this.deleteSongOnList} editSong={this.editSongOnList} listSongs={this.state.songsList} />
                 <AddSongForm addNewSong={this.addSongToSongsList} />
+                <EditSongForm updateSong={this.getSongDetails} />
+                <Footer />
             </React.Fragment>
         );
     }
