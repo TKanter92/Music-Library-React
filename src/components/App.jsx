@@ -5,6 +5,8 @@ import DisplaySongsList from './DisplaySongsList/DisplaySongsList';
 import TitleBar from './TitleBar/TitleBar';
 import Footer from './Footer/Footer';
 import EditSongForm from './EditSongForm/EditSongForm';
+// import SearchBar from './SearchBar/SearchBar';
+
 
 
 class App extends Component {
@@ -59,6 +61,7 @@ class App extends Component {
         return (
             <React.Fragment>
                 <TitleBar />
+                {/* <SearchBar /> */}
                 <DisplaySongsList deleteSong={this.deleteSongOnList} editSong={this.setSongToEdit} listSongs={this.state.songsList} />
                 <AddSongForm addNewSong={this.addSongToSongsList} />
                 {this.state.editSong ? 

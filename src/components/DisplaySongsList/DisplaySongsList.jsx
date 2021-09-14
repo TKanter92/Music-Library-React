@@ -2,7 +2,6 @@ import React from 'react';
 import './DisplaySongsList.css';
 
 
-
 const DisplaySongsList = (props) => {
     return (
         <React.Fragment>
