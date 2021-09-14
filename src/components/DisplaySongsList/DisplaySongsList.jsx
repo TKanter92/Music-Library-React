@@ -25,7 +25,7 @@ const DisplaySongsList = (props) => {
                             <td>{song.album}</td>
                             <td>{song.release_date}</td>
                             <td>{song.genre}</td>
-                            <td><button onClick={ () => props.editSong(song.id)}> Edit </button></td>
+                            <td><button onClick={ () => props.editSong(song)}> Edit </button></td>
                             <td><button onClick={ () => props.deleteSong(song.id)} > Delete </button></td>
                         </tr>
                         )

@@ -11,7 +11,8 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            songsList: [],   
+            songsList: [],
+            editSong: undefined
         }
     }
     componentDidMount() {
@@ -25,6 +26,12 @@ class App extends Component {
         });
     }
 
+    setSongToEdit=(song)=>{
+        this.setState({
+            editSong : song
+        })
+    }
+
     getSongDetails = async (songId) => {
         await axios.get(`http://127.0.0.1:8000/music/${songId}/`);
         this.getAllSongs();
@@ -35,9 +42,12 @@ class App extends Component {
         this.getAllSongs();
     }
 
-    editSongOnList = async (songId) => {
-        await axios.put(`http://127.0.0.1:8000/music/${songId}/`)
+    editSongOnList = async (songId, songToEdit) => {
+        await axios.put(`http://127.0.0.1:8000/music/${songId}/`, songToEdit)
         this.getAllSongs();
+        this.setState({
+            editSong: undefined
+        })
     }
 
     deleteSongOnList = async (songId) => {
@@ -49,9 +59,12 @@ class App extends Component {
         return (
             <React.Fragment>
                 <TitleBar />
-                <DisplaySongsList deleteSong={this.deleteSongOnList} editSong={this.editSongOnList} listSongs={this.state.songsList} />
+                <DisplaySongsList deleteSong={this.deleteSongOnList} editSong={this.setSongToEdit} listSongs={this.state.songsList} />
                 <AddSongForm addNewSong={this.addSongToSongsList} />
-                <EditSongForm updateSong={this.getSongDetails} />
+                {this.state.editSong ? 
+                <EditSongForm songToEdit={this.state.editSong} updateSong={this.editSongOnList} />
+                :
+                null}
                 <Footer />
             </React.Fragment>
         );
